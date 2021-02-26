@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同源和跨源</title>
+</head>
+<body>
+    <a href="127.0.0.1:8000/one">启动使用127.0.0.1:8000/one端口打开本网页,获取第一个按钮的数据，属于同源</a>
+    <br>
+    <button>同源发送AJAX请求</button>
+    <h3>jsonp借助script特性进行跨域</h3>
+    <p>方案一</p>
+    <p>直接使用浏览器打开本simpel.html网页,接获取到app.js文件中的数据</p>
+    <p>因为浏览器是执行javascript语言的，会自动执行本页面的代码，在下方的第二个script标签引入了app.js文件</p>
+    <p>在控制台中将会打印app.js里面的数据</p>
+    <p>方案二</p>
+    <p>使用visual studio code编辑器,在simpel页面右键打开 Open with Live Server方式打开网页</p>
+    <p>把第二个script标签仅仅只有src="app.js"的注释掉</p>
+    <p>第三个script标签的链接换下面这个，也是可以读取数据的，说明script标签可以进行跨域</p>
+    <p>http://127.0.0.1:5500/testthirteen/app.js</p>
+    <button>跨源自动获取</button>
+    <p>app.js里面的第二个</p>
+    <div id="resulttwo" style="width: 500px;height: 50px;border: solid 2px teal;"></div>
+    <p>第四个script</p>
+    <div id="resultthree" style="width: 500px;height: 50px;border: solid 2px teal;"></div>
+    <p>第六个script</p>
+    <div id="resultsix" style="width: 500px;height: 50px;border: solid 2px teal;"></div>
+    <!-- 第一个script -->
+    <script>
+        // 把所有的按钮标签都选择
+        const btns = document.querySelectorAll('button');
+        // 第一个按钮
+        btns[0].onclick = function(){
+            // 创建变量
+            const textone = new XMLHttpRequest();
+            // 因为满足同源策略,url可以简写为'/data'   127.0.0.1:8000/data
+            textone.open("GET",'/two'); 
+            // 发送
+            textone.send();
+            // 绑定事件
+            textone.onreadystatechange =function(){
+                if(textone.readyState === 4 ){
+                    if(textone.status >= 200 && textone.status < 300){
+                        console.log(textone.response);
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- 第四个script -->
+     <script>
+         // 数据处理
+        function handlethree (datathree){
+        // 获取resulttwo 元素
+        const resultthree = document.getElementById('resultthree');
+        resultthree.innerHTML = datathree.name;
+        };
+        // 最后一个方框里面的数据处理
+        // 数据处理
+        function handlesix (datasix){
+        // 获取resulttwo 元素
+        const resultsix = document.getElementById('resultsix');
+        resultsix.innerHTML = datasix.name;
+        };
+     </script>
+    <!-- 下方二三script只取一个      因为这个是指向获取数据链接的标签， 需要摆放在最后的script标签内，否则第四个script标签的被容会报错-->
+    <!-- 第二个script -->
+    <!-- <script src="./app.js"></script> -->
+    
+    <!-- 第三个script -->
+     <script src="http://127.0.0.1:5500/testthirteen/app.js"></script> 
+     <!-- 第五个script标签 -->
+     <script src="http://127.0.0.1:8000/five"></script>
+     <!-- 第六个script -->
+     <script src="http://127.0.0.1:8000/six"></script>
+     <!--  -->
+
+</body>
+
+</html>
+

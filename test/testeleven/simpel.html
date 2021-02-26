@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 存放Axios链接  -->
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <!-- 添加允许跨源属性获取链接  向该链接发送请求的时候不会发送当前域名下的cookies  一般当前域名的cookies存放着你的帐号密码-->
+        <script crossorigin="anonymous" src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+    <title>Axios发送ajax请求</title>
+</head>
+<body>
+    <button style="background-color: tomato;">GET</button>
+    <button style="background-color: tomato;">POST</button>
+    <button style="background-color: violet;">通用Ajax</button>
+    <div id="result" style="width: 180px;height: 100px;border: solid 2px teal;"></div>
+    <script>
+        // 把所有的按钮标签都选择
+        const btns = document.querySelectorAll('button');
+        // 配置 baseURL
+        axios.defaults.baseURL = 'http://127.0.0.1:8000';
+        // 第一个按钮
+        btns[0].onclick = function(){
+            // GET请求
+            axios.get('/axiosget', {
+                // url 参数
+                params: {
+                    id: 100,
+                    name: 999
+                },
+                // 请求头信息
+                headers:{
+                    sex: 'boy',
+                    age: 999
+                }
+                // axios数据返回和处理和jquery不一样，
+                // jquery使用的是回调函数
+                // axios使用的是基于Promise   .then(value => {};) 箭头函数
+            }).then(value =>{
+                console.log(value);
+            })
+        }
+        // 第二个按钮
+        btns[1].onclick = function(){
+            // POST请求   axios.post('1.路由',{2.参数-请求体},{3.其他设置})
+            // 2.参数-请求体  将会被转换未json格式字符串传递过去
+            axios.post('/axiospost',{
+                username:'dayo',
+                password:'dayo'
+            },{
+                // url参数
+                params: {
+                    id: 999,
+                    vip: 999
+                },
+                // 请求头参数
+                headers:{
+                    height:999,
+                    weight:999
+                }
+                // 打印返回来的数据
+            }).then(value =>{console.log(value);})
+        }
+        // 第三个按钮
+        btns[2].onclick =function(){
+            axios({
+                // 请求方法
+                method: 'POST',
+                // url
+                url: '/axios-server',
+                // url参数
+                params: {
+                    vip: 999,
+                    level: 999
+                },
+                // 请求头信息
+                headers: {
+                    a: 999,
+                    b: 999
+                },
+                // 请求体信息
+                data: {
+                    username: 'dayo',
+                    password: 'dayo'
+                }
+                // 打印响应的所有信息
+            }).then(response=>{console.log(response);
+            // 另外打印响应状态码
+            console.log(response.status);
+            // 响应状态字符串
+            console.log(response.statusText);
+            // 响应头信息
+            console.log(response.headers);
+            // 响应体 
+            console.log('响应体:',response.data);
+            })
+        }
+    </script>
+</body>
+
+</html>
+

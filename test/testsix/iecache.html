@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>点击获取信息</button>
+    <div id="result" style="width: 300px;height: 200px;border: solid 2px teal;"></div>
+    <script>
+        // 一:获取元素对象
+        const texttwo = document.getElementsByTagName('button')[0];
+        // 
+        const result = document.querySelector('#result');
+        // 
+        texttwo.addEventListener('click', function(){
+            console.log('点击发送测试成功.')
+            // 1.发送请求
+            const textone = new XMLHttpRequest();
+            // 
+            // 自动转化
+            // 借助textone对象里面的属性来转化
+            // 设置响应体数据的类型
+            textone.responseType = 'json';
+            // 2.初始化
+            textone.open('GET','http://127.0.0.1:8000/ie?t='+Date.now());
+            // 3.发送
+            textone.send();
+            // 4.事件绑定
+            textone.onreadystatechange = function(){
+                if(textone.readyState === 4){
+                    if(textone.status >= 200 && textone.status < 300){
+                        // 测试打印
+                        console.log(textone.response);
+                        //  使用自动转化
+                        result.innerHTML = textone.response.name;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

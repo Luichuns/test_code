@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>点击获取信息</button>
+    <button>取消获取信息</button>
+    <div id="result" style="width: 300px;height: 200px;border: solid 2px teal;"></div>
+    <script>
+        // 一:获取元素对象
+        const textsend= document.getElementsByTagName('button')[0];
+        //  使textone 等于无
+        let textone = null;
+        // 
+        const result = document.querySelector('#result');
+        // 
+        textsend.addEventListener('click', function(){
+            console.log('点击发送测试成功.')
+            // 1.发送请求
+            textone = new XMLHttpRequest();
+            // 超时设置  超过两秒 请求将会自动取消
+            textone.timeout = 4000;
+            // 超时回调,确认超时后，弹出一个窗口
+            textone.ontimeout = function(){alert('两秒内没有接收到返回，故弹出窗口');}
+            // 网络异常
+            // 这个不需要后端去处理，只是用户的网络出现了问题
+            // 只做一个弹出框来友好地告诉用户
+            textone.onerror = function(){alert('网络异常的弹出框.');}
+            // 自动转化
+            // 借助textone对象里面的属性来转化
+            // 设置响应体数据的类型
+            textone.responseType = 'json';
+            // 2.初始化
+            textone.open('GET','http://127.0.0.1:8000/ie?t='+Date.now());
+            // 3.发送
+            textone.send();
+            // 4.事件绑定
+            textone.onreadystatechange = function(){
+                if(textone.readyState === 4){
+                    if(textone.status >= 200 && textone.status < 300){
+                        // 测试打印
+                        console.log(textone.response);
+                        //  使用自动转化
+                        result.innerHTML = textone.response.name;
+                    }
+                }
+            }
+        });
+        const textcancel= document.getElementsByTagName('button')[1];
+        textcancel.addEventListener('click', function(){
+            console.log('点击了第二个按钮取消获取，但是已经发送。');
+            // 取消获取得到的数据
+            textone.abort();
+
+        });
+    </script>
+</body>
+</html>

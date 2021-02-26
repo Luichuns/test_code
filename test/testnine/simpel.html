@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>点击获取信息</button>
+    <button>取消获取的信息</button>
+    <div id="result" style="width: 300px;height: 200px;border: solid 2px teal;"></div>
+    <script>
+        // 获取元素
+        const btns = document.querySelectorAll('button');
+        let textone = null;
+        // 表识变量     isSending(使我们自己起的变量名字)     用于判断是否正在发送ajax请求   false(不在发送中)  ture(正在发送中)
+        let isSending = false;
+        // 第一个按钮
+        btns[0].onclick =function(){
+            // 判断标识变量               如果正在发送(ture)，则取消该请求，创建新的请求
+            if(isSending) textone.abort();
+            textone = new XMLHttpRequest();
+            // 标识发送状态             修改 (isSending)变量的值  这个时候发送为true，因为进入了发送状态
+            isSending = true;
+            textone.open('GET','http://127.0.0.1:8000/ie');
+            textone.send();
+            // 当请求发送完成，并且接收到完整的数据的时候，变量isSending 更改为原来的false
+            textone.onreadystatechange = function(){
+                if(textone.readyState === 4){
+                    // 修改标识变量
+                    isSending = false;
+                }
+            }
+        }
+        // abort
+        btns[1].onclick =function(){
+            textone.abort();
+        }
+                    // readystate 是textone 对象中的属性，表示状态    有5个值
+            //                                                                                                  状态     意思
+            //                                                                                                     0        没初始化
+            //                                                                                                     1        open方法调用完毕
+            //                                                                                                     2        send方法调用完毕
+            //                                                                                                     3        服务端返回了部分结果
+            //                                                                                                     4        服务端返回了所有结果
+    </script>
+</body>
+
+</html>
+

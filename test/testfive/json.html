@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="result" style="width: 300px;height: 200px;border: solid 2px teal;"></div>
+    <script>
+        // 一:获取元素对象
+        const textone = document.getElementById('result');
+        // 二:绑定键盘按下事件
+        window.onkeydown = function(){
+            // 测试打印
+            console.log("已经按下按键");
+            // 1.发送请求
+            const textone = new XMLHttpRequest();
+            // 
+            // 自动转化
+            // 借助textone对象里面的属性来转化
+            // 设置响应体数据的类型
+            textone.responseType = 'json';
+            // 2.初始化
+            textone.open('GET','http://127.0.0.1:8000/jsonserver');
+            // 3.发送
+            textone.send();
+            // 4.事件绑定
+            textone.onreadystatechange = function(){
+                if(textone.readyState === 4){
+                    if(textone.status >= 200 && textone.status < 300){
+                        // 测试打印
+                        // console.log(textone.response);
+                        // result.innerHTML = textone.response;
+                        // 手动对数据转化
+                        // let data = JSON.parse(textone.response);
+                        // 在控制台中打印
+                        // console.log(data);
+                         // 把name的值显示在方框内
+                        // result.innerHTML = data.name;
+// 
+                        // 测试打印
+                        console.log(textone.response);
+                        //  使用自动转化
+                        result.innerHTML = textone.response.name;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

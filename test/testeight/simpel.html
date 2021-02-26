@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>点击获取信息</button>
+    <button>取消获取的信息</button>
+    <div id="result" style="width: 300px;height: 200px;border: solid 2px teal;"></div>
+    <script>
+        // 获取元素
+        const btns = document.querySelectorAll('button');
+        let textone = null;
+        btns[0].onclick =function(){
+            textone = new XMLHttpRequest();
+            textone.open('GET','http://127.0.0.1:8000/ie');
+            textone.send();
+        }
+        // abort
+        btns[1].onclick =function(){
+            textone.abort();
+        }
+    </script>
+</body>
+</html>
